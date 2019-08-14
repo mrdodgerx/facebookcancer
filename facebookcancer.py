@@ -75,7 +75,7 @@ def yahooemail(em,userid):
     len_email = (27-len(em))
     if (vuln == "\033[32mVuln"):
         len_vuln = (19-(len(vuln)-8))
-        print ("\033[36m|"+(em)+len_email*" "+"|"+(len_vuln-10)*" "+vuln+(len_vuln-10)*" "+"\033[36m| https://www.facebook.com/profile.php?id=",userid)
+        print ("\033[36m|"+(em)+len_email*" "+"|"+(len_vuln-10)*" "+vuln+(len_vuln-10)*" "+"\033[36m| https://www.facebook.com/profile.php?id="+userid)
     # else:
     #     len_vuln = (19-(len(vuln)-8))
     #     print ("\033[36m|"+(em)+len_email*" "+"|"+(len_vuln-7)*" "+vuln+(len_vuln-9)*" "+"\033[36m|")
