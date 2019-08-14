@@ -1,3 +1,5 @@
+#  virtualenv ../facebookcancer 
+# source bin/activate
 import requests
 import hashlib
 import sys
@@ -5,7 +7,7 @@ import time
 import json
 from bs4 import BeautifulSoup
 import mechanize
-
+import argparse
 
 def generatefbtoken(id,password):
     pwd = password
@@ -46,6 +48,9 @@ def getemailfriendfb(token):
     r = requests.get(url)
     frindsobj = r.json()
     datas = frindsobj["data"]
+    print("Facebook total friend",frindsobj["summary"]["total_count"])
+    print("Please wait. We are scanning the list of vuln users")
+
     for data in datas:
         try:
             arrayemail.append(data["email"])
@@ -81,7 +86,27 @@ def yahooemail(em):
     #     print ("\033[36m|"+(em)+len_email*" "+"|"+(len_vuln-7)*" "+vuln+(len_vuln-9)*" "+"\033[36m|")
 
 if __name__ == '__main__':
-    token = generatefbtoken('email sini','password sini')
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('-u', action='store',
+                        dest='username',
+                        help='Facebook username')
+
+    parser.add_argument('-p', action='store',
+                        dest='password',
+                        help='Facebook password')
+
+    results = parser.parse_args()
+    # print('username     = {!r}'.format(results.username))
+    # print('password   = {!r}'.format(results.password))
+
+    if results.username is None:
+        sys.exit("Please input facebook username. facebookcancer.py -h for more info")
+    if results.password is None:
+        sys.exit("Please input facebook password. facebookcancer.py -h for more info")
+ 
+    token = generatefbtoken(results.username,results.password)
+    print("Facebook Token: ", token)
     if token is None:
         sys.exit("INVALID TOKEN")
     list_email = getemailfriendfb(token)
