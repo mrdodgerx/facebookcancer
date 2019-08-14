@@ -114,7 +114,7 @@ if __name__ == '__main__':
         if '@yahoo' in email:
             # print(email)
             yahooemail(email)
-            time.sleep(2)
+            # time.sleep(2)
             
 
     
