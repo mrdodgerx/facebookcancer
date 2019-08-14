@@ -47,19 +47,14 @@ def getemailfriendfb(token):
     url = "https://graph.facebook.com/v3.2/me/friends/?fields=name,email&access_token="+token+"&limit=5000"
     r = requests.get(url)
     frindsobj = r.json()
+    # print(frindsobj)
     datas = frindsobj["data"]
     print("Facebook total friend",frindsobj["summary"]["total_count"])
     print("Please wait. We are scanning the list of vuln users")
 
-    for data in datas:
-        try:
-            arrayemail.append(data["email"])
-        except Exception:
-            pass
-    
-    return arrayemail
+    return datas
 
-def yahooemail(em):
+def yahooemail(em,userid):
 
     br = mechanize.Browser()
     br.set_handle_robots(False)
@@ -80,7 +75,7 @@ def yahooemail(em):
     len_email = (27-len(em))
     if (vuln == "\033[32mVuln"):
         len_vuln = (19-(len(vuln)-8))
-        print ("\033[36m|"+(em)+len_email*" "+"|"+(len_vuln-10)*" "+vuln+(len_vuln-10)*" "+"\033[36m|")
+        print ("\033[36m|"+(em)+len_email*" "+"|"+(len_vuln-10)*" "+vuln+(len_vuln-10)*" "+"\033[36m| https://www.facebook.com/profile.php?id=",userid)
     # else:
     #     len_vuln = (19-(len(vuln)-8))
     #     print ("\033[36m|"+(em)+len_email*" "+"|"+(len_vuln-7)*" "+vuln+(len_vuln-9)*" "+"\033[36m|")
@@ -109,12 +104,16 @@ if __name__ == '__main__':
     print("Facebook Token: ", token)
     if token is None:
         sys.exit("INVALID TOKEN")
-    list_email = getemailfriendfb(token)
-    for email in list_email:
-        if '@yahoo' in email:
-            # print(email)
-            yahooemail(email)
-            # time.sleep(2)
+    data_list = getemailfriendfb(token)
+    for data in data_list:
+        # print(data)
+        try:
+            if '@yahoo' in data["email"]:
+                # print(email)
+                yahooemail(data["email"],data["id"])
+        except Exception:
+            pass
+        #     # time.sleep(2)
             
 
     
