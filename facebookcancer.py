@@ -14,11 +14,6 @@ def generatefbtoken(id,password):
     API_SECRET = '62f8ce9f74b12f84c123cc23437a4a32'
     headers = {
         'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1',
-        "Accept" : "text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,text/png,*/*;q=0.5",
-        "Accept-Language" : "en-us,en;q=0.5",
-        "Accept-Charset" : "ISO-8859-1",
-        "Content-type": "application/x-www-form-urlencoded",
-        "Host": "m.facebook.com"
     }
     data = {
         "api_key":"882a8490361da98702bf97a021ddc14d",
